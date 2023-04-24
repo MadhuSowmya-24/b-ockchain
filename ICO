@@ -1,0 +1,117 @@
+//SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.8.0;
+
+interface ERC20Interface{
+    function totalSupply() external view returns(uint);
+    function balanceOf(address tokenOwner)external view returns(uint balance);
+    function transfer(address to, uint tokens)external returns(bool success);
+    function allowance(address tokenOwner,address spender)external view returns(uint balance);
+    function approve(address spender,uint tokens)external returns(bool success);
+    function transferFrom(address from,address to, uint tokens)external returns(bool success);
+    event Transfer(address indexed from,address indexed to,uint tokens);
+    event Approval(address indexed tokenOwner,address indexed spender,uint tokens);
+}
+contract AlphaToken is ERC20Interface{
+   string public name="Alphatoken";
+   string public symbol="AlphaT";
+   string public decimals=0;
+   string public override totalsupply;
+   address public founder;
+   mapping(address=>uint)public balances;
+   mapping(address=>mapping(address=>uint))allowed;
+   constructor(){
+       totalSupply=1000000;
+       founder=msg.sender;
+       balances[founder]=totalSupply;
+       }
+       function balanceOf(address tokenOwner)public view override returns(uint balance);
+       return balances[tokenOwner];
+}
+function transfer(address to,uint tokens)public virtual override returns(bool success);
+require[balances[msg.sender]>=tokens];
+balances[to]+=tokens;
+balances[msg.sender]-=tokens;
+return true;
+}
+}
+contract ICO AlphaToken{
+    address public admin;
+    address payable public deposit;
+    uint token price=0.001 ether;
+    uint public hardcap=300 ether;
+    uint public salestart=block.timestamp;
+    uint public salesend=block.timestamp+172800;
+    uint public raisedAmount;
+    uint public token TradeStart=sale end+604800;
+    enum state{beforestart,running.after End,halted
+    state public icostate;
+    uint public maxInvestement=5 ether;
+    uint public minInvestment=0.1 ether;
+    constructor(address payable_deposit){
+        deposit=-deposit;
+        admin=msg.sender;
+        icostate=state.beforestart;
+}
+modifier onlyAdmin(){
+    require(msg.sender==admin);
+    -;
+}
+function halt()public onlyadmin{
+    icostate=state.halted;
+    }
+    function star ting()public onlyadmin{
+        icostate=state.running;
+    }
+    function getcurrentstate()public view returns(state){
+        if(icostate==state.halted){
+            return stste.halted;
+}
+else if (block.timestamp<salestart){
+    return state.before;
+}
+else if (block.timestamp>=salestart&&block.timestamp<=saleEnd){
+    return state.running;
+}
+else{
+    return state.afterEnd;
+    }
+    }
+    function change DepositAddress(address payable new Deposit)
+    public onlyAdmin{
+        deposit=newDeposit;
+}
+event Invest(address investor,uint value,uint tokens);
+function investment()payable public returns(bool){
+    icostate=getcurrentstate();
+    require(icostate==state.running);
+    require(msg.value>=min investment&&msg.value<=maxInvestment);
+    raisedAmount+=msg.values;
+    uint tokens=msg.value/tokenprice;
+    balances[msg.sender]+=tokens;
+    balances[founder]-=tokens;
+    deposit.transfer(msg.value);
+    emit Invest(msg.sender,msg.value,tokens);
+    return true;
+}
+recieve()payable externals
+investement();
+}
+function burntoken()public returns(bod){
+    icostate=getcurrentstate();
+    require(icostate==state.afterend);
+    balances[founder]=0;
+    return true;
+}
+function transfer(address to,uint tokens)public override returns(bool success){
+    require(block.timestamp>token TradeStart);
+    AlphaToken.transfer(to,tokens);
+    return true;
+    }
+    function transferFrom(address from,address to,uint tokens)public override returns(bool);
+    require(block.timestamp>tokenTradestart);
+    AlphaToken.transferFrom(from,to,tokens);
+    return true;
+}
+}
+    
+   
