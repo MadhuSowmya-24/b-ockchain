@@ -1,0 +1,44 @@
+//SPDX-License-Identifier: MIT
+pragma solidity >=0.8.7;
+contract dl{
+
+    address payable[] public players;
+
+    address public manager;
+    constructor(){
+
+        manager=msg.sender;
+
+    }
+
+    receive() payable external{
+
+        require(msg.value==0.1 ether,"inaccurate amount sent");
+
+        players.push(payable(msg.sender));
+
+    }
+    function randomnumber() internal view returns(uint){
+
+        return uint (keccak256(abi.encodePacked(block.difficulty,block.timestamp)));
+
+    }
+   function getbal() public view returns(uint){
+
+       require(msg.sender==manager,"you are not the manager");
+
+       return address(this).balance;
+   }
+   function WinnerSelection() public{
+
+       require(msg.sender==manager);
+       require(players.length>=3);
+       uint rand=randomnumber();//20
+       address payable winner;
+      uint i=rand % players.length;   //20%3==2
+      winner=players[i]; 
+      winner.transfer(getbal());
+      players= new address payable[](0);
+
+   }
+}
